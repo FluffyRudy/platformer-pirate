@@ -38,8 +38,6 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.get_input()
-        self.apply_gravity()
-        self.rect.x += (self.direction.x * self.speed)
 
     def reset_speed(self):
         self.speed = Player.DEFAULT_SPEED

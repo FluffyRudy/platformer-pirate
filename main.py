@@ -22,7 +22,7 @@ class Game:
         while True:
             self.handle_event()
             self.screen.fill("black")
-            self.level.draw(self.screen)
+            self.level.run(self.screen)
             pygame.display.update()
             self.clock.tick(self.FPS)
 

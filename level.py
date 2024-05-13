@@ -39,15 +39,38 @@ class Level:
         else:
             self.world_shift = 0
             player.reset_speed()
-    
+
     def horizontal_movement_collision(self):
         player = self.player.sprite
+        player.rect.x += (player.direction.x * player.speed)
         
-            
-    def draw(self, surface: pygame.Surface):
+        for tile_sprite in self.tiles.sprites():
+            if tile_sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = tile_sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = tile_sprite.rect.left
+
+    def vertical_movement_collision(self):
+        player = self.player.sprite
+        player.apply_gravity()
+
+        for tile_sprite in self.tiles.sprites():
+            if tile_sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = tile_sprite.rect.top
+                    player.direction.y = 0
+                elif player.direction.y < 0:
+                    player.rect.top = tile_sprite.rect.bottom
+                    player.direction.y = 0
+                
+
+    def run(self, surface: pygame.Surface):
         self.tiles.update(self.world_shift)
-        self.player.update()
+        self.tiles.draw(surface)
         self.scroll_x()
 
-        self.tiles.draw(surface)
+        self.player.update()
+        self.horizontal_movement_collision()
+        self.vertical_movement_collision()
         self.player.draw(surface)
