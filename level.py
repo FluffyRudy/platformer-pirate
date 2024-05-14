@@ -62,7 +62,7 @@ class Level:
                     player.direction.y = 0
                 elif player.direction.y < 0:
                     player.rect.top = tile_sprite.rect.bottom
-                    player.direction.y = 0
+                    player.direction.y = player.gravity #to allow sprite to falldown with no delay
                 
 
     def run(self, surface: pygame.Surface):

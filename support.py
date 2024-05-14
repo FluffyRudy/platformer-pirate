@@ -1,7 +1,7 @@
 import os
 import pygame
 
-def import_folder(path):
+def import_folder(path: str):
     surf_list = []
 
     sorted_files = sorted(os.listdir(path))

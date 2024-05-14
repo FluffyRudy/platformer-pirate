@@ -7,6 +7,7 @@ level_map = [
 ' XXXX         XX         XX  XXXX         XX         XX ',
 ' XXXX       XX               XXXX       XX              ',
 ' XX    X  XXXX    XX  XX     XX    X  XXXX    XX  XX    ',
+'                                                        ',
 '       X  XXXX    XX  XXX          X  XXXX    XX  XXX   ',
 '    XXXX  XXXXXX  XX  XXXX      XXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  XXXXXXXX  XXXXXX  XX  XXXX  ',
@@ -27,3 +28,4 @@ FPS = 60
 TILE_SIZE = 32
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = TILE_SIZE * len(level_map)
+print(TILE_SIZE * len(level_map))
