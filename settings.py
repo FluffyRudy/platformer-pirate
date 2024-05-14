@@ -28,4 +28,3 @@ FPS = 60
 TILE_SIZE = 32
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = TILE_SIZE * len(level_map)
-print(TILE_SIZE * len(level_map))
