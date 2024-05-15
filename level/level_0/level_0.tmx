@@ -5,9 +5,9 @@
  <tileset firstgid="94" source="../PalmTree.tsx"/>
  <tileset firstgid="103" source="../PalmTreeBack.tsx"/>
  <tileset firstgid="115" source="../barrel.tsx"/>
- <tileset firstgid="116" source="../player.tsx"/>
- <tileset firstgid="118" source="../enemies.tsx"/>
- <tileset firstgid="121" source="../boundry.tsx"/>
+ <tileset firstgid="118" source="../player.tsx"/>
+ <tileset firstgid="120" source="../enemies.tsx"/>
+ <tileset firstgid="123" source="../boundry.tsx"/>
  <layer id="1" name="Terrain" width="50" height="23" tintcolor="#99c1f1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -37,33 +37,33 @@
  </layer>
  <group id="13" name="EnemisBound">
   <objectgroup id="15" name="Boundry">
-   <object id="159" gid="121" x="309.333" y="158.667" width="32" height="32"/>
-   <object id="160" gid="121" x="484" y="158.667" width="32" height="32"/>
-   <object id="161" gid="121" x="1396" y="190.667" width="32" height="32"/>
-   <object id="162" gid="121" x="1284" y="190.667" width="32" height="32"/>
-   <object id="163" gid="121" x="1350.67" y="381.333" width="32" height="32"/>
-   <object id="164" gid="121" x="1501.33" y="384" width="32" height="32"/>
-   <object id="165" gid="121" x="961.333" y="512" width="32" height="32"/>
-   <object id="172" gid="121" x="292" y="576" width="32" height="32"/>
-   <object id="173" gid="121" x="848.667" y="574" width="32" height="32"/>
+   <object id="159" gid="123" x="309.333" y="158.667" width="32" height="32"/>
+   <object id="160" gid="123" x="484" y="158.667" width="32" height="32"/>
+   <object id="161" gid="123" x="1396" y="190.667" width="32" height="32"/>
+   <object id="162" gid="123" x="1284" y="190.667" width="32" height="32"/>
+   <object id="163" gid="123" x="1350.67" y="381.333" width="32" height="32"/>
+   <object id="164" gid="123" x="1501.33" y="384" width="32" height="32"/>
+   <object id="165" gid="123" x="961.333" y="512" width="32" height="32"/>
+   <object id="172" gid="123" x="292" y="576" width="32" height="32"/>
+   <object id="173" gid="123" x="848.667" y="574" width="32" height="32"/>
   </objectgroup>
   <objectgroup id="12" name="Enemies">
-   <object id="145" gid="120" x="1221.33" y="546.333" width="34" height="30"/>
-   <object id="147" gid="120" x="802.5" y="578.5" width="34" height="30"/>
-   <object id="148" gid="2147483768" x="379.5" y="579.5" width="34" height="30"/>
-   <object id="151" gid="2147483768" x="1085" y="550" width="34" height="30"/>
-   <object id="152" gid="2147483768" x="669" y="163.5" width="34" height="30"/>
-   <object id="153" gid="2147483768" x="339" y="162.333" width="34" height="30"/>
-   <object id="154" gid="2147483768" x="1405" y="385.667" width="34" height="30"/>
-   <object id="156" gid="2147483768" x="1334.33" y="195" width="34" height="30"/>
-   <object id="166" gid="120" x="923.333" y="515" width="34" height="30"/>
-   <object id="167" gid="121" x="624" y="162" width="32" height="32"/>
-   <object id="168" gid="121" x="806" y="152" width="32" height="32"/>
+   <object id="145" gid="122" x="1221.33" y="546.333" width="34" height="30"/>
+   <object id="147" gid="122" x="802.5" y="578.5" width="34" height="30"/>
+   <object id="148" gid="2147483770" x="379.5" y="579.5" width="34" height="30"/>
+   <object id="151" gid="2147483770" x="1085" y="550" width="34" height="30"/>
+   <object id="152" gid="2147483770" x="669" y="163.5" width="34" height="30"/>
+   <object id="153" gid="2147483770" x="339" y="162.333" width="34" height="30"/>
+   <object id="154" gid="2147483770" x="1405" y="385.667" width="34" height="30"/>
+   <object id="156" gid="2147483770" x="1334.33" y="195" width="34" height="30"/>
+   <object id="166" gid="122" x="923.333" y="515" width="34" height="30"/>
+   <object id="167" gid="123" x="624" y="162" width="32" height="32"/>
+   <object id="168" gid="123" x="806" y="152" width="32" height="32"/>
   </objectgroup>
  </group>
  <objectgroup id="11" name="Player">
-  <object id="134" gid="117" x="30.6667" y="288" width="64" height="64"/>
-  <object id="135" gid="116" x="1532" y="381.333" width="64" height="64"/>
+  <object id="134" gid="119" x="30.6667" y="288" width="64" height="64"/>
+  <object id="135" gid="118" x="1532" y="381.333" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="9" name="PalmTreeBack" tintcolor="#8fa0a4">
   <object id="105" gid="110" x="29" y="385" width="64" height="64"/>
@@ -81,13 +81,7 @@
   <object id="120" gid="110" x="1086" y="696" width="64" height="64"/>
   <object id="121" gid="110" x="1182" y="702" width="64" height="64"/>
  </objectgroup>
- <objectgroup id="10" name="Barrel">
-  <object id="127" gid="115" x="5.66667" y="376.333" width="26" height="30"/>
-  <object id="128" gid="115" x="1431" y="380.333" width="26" height="30"/>
-  <object id="129" gid="115" x="507" y="573.667" width="26" height="30"/>
-  <object id="132" gid="115" x="1351" y="188.333" width="26" height="30"/>
-  <object id="133" gid="115" x="451" y="157.667" width="26" height="30"/>
- </objectgroup>
+ <objectgroup id="10" name="Barrel"/>
  <objectgroup id="8" name="PalmTreeFront" tintcolor="#8ff0a4">
   <object id="64" gid="100" x="40.5" y="415.5" width="12" height="61"/>
   <object id="65" gid="95" x="26.25" y="362.25" width="39" height="32"/>
