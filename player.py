@@ -5,7 +5,7 @@ import os
 from support import import_folder
 
 class Player(pygame.sprite.Sprite):
-    DEFAULT_SPEED = 5
+    DEFAULT_SPEED = 4
     def __init__(self, pos: tuple[int, int]):
         super().__init__()
 
@@ -62,7 +62,7 @@ class Player(pygame.sprite.Sprite):
                 self.dust_frame_index = 0
 
             dust_particle = self.dust_run_particles[int(self.dust_frame_index)]
-            position = (self.rect.centerx - self.direction.x * self.rect.width//4, self.rect.bottom - dust_particle.get_height()) 
+            position = (self.rect.centerx - self.direction.x * dust_particle.get_width(), self.rect.bottom - dust_particle.get_height()) 
             self.display_surface.blit(dust_particle, (position))
 
     def get_input(self):

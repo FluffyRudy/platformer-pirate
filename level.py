@@ -1,50 +1,122 @@
 from typing import Any
+from copy import deepcopy
+from math import hypot
 from settings import TILE_SIZE, SCREEN_WIDTH
 import pygame
 from tiles import Tile
 from player import Player
+from level_data import LevelData
 
 class Level:
-    def __init__(self, level_data: Any, surface: pygame.Surface):
+    def __init__(self, level_data: LevelData, surface: pygame.Surface):
         self.display_surface = surface
-        self.left_scroll_x = SCREEN_WIDTH // 5
-        self.right_scroll_x = SCREEN_WIDTH - self.left_scroll_x
-        self.tiles = pygame.sprite.Group()
-        self.player = pygame.sprite.GroupSingle()
+        self.map_size = level_data.get_map_size()
+
+        self.terrain = level_data.get_terrain_data()
+        self.terrain_group = pygame.sprite.Group(self.terrain)
+
+        front_palm_tree = level_data.get_palm_tree_data()['front']
+        back_palm_tree  = level_data.get_palm_tree_data()['back']
+        self.front_palm_tree_group = pygame.sprite.Group(front_palm_tree)
+        self.back_palm_tree_group  = pygame.sprite.Group(back_palm_tree)
+
+        barrel = level_data.get_barrel_data()
+        self.barrel_group = pygame.sprite.Group(barrel)
+
+        coins = level_data.get_coins()
+        self.coin_groups = pygame.sprite.Group(coins)
+
+        river = level_data.get_river()
+        self.river_group = pygame.sprite.Group(river)
+
+        enemies = level_data.get_enemies()
+        self.enemies_group = pygame.sprite.Group(enemies)
+        self.enemy_constraints = level_data.get_enemies_boundries()
+
+        self.player_start_end = level_data.get_start_end_rect()   
+        player = Player(self.player_start_end[0].topright)
+        self.player = pygame.sprite.GroupSingle(player)
         self.world_shift = 0
-        self.setup_level(level_data)
+        self.scroll_start_pos = self.display_surface.get_width() // 3
+        self.lower_bound = 0
+        self.upper_bound = self.display_surface.get_width() - self.player_start_end[1].width
+
+        level_data.get_river()
+
+    def run(self):
+        self.update()
+
+    def update(self):
+        self.terrain_group.update(self.world_shift)
+        self.terrain_group.draw(self.display_surface)
+
+        self.front_palm_tree_group.update(self.world_shift)
+        self.back_palm_tree_group.update(self.world_shift)
+        self.front_palm_tree_group.draw(self.display_surface)
+        self.back_palm_tree_group.draw(self.display_surface)
+
+        self.barrel_group.update(self.world_shift)
+        self.barrel_group.draw(self.display_surface)
+
+        self.coin_groups.update(self.world_shift)
+        self.coin_groups.draw(self.display_surface)
+
+        self.enemies_group.update(self.world_shift)
+        self.enemies_group.draw(self.display_surface)
+
+        self.handle_constraints_on_enemy()
+
+        self.river_group.update(self.world_shift)
+        self.river_group.draw(self.display_surface)
+
+        self.horizontal_movement_collision()
+        self.vertical_movement_collision()
+
+        self.player.update()
+        self.player.draw(self.display_surface)
+
+        self.scroll_x()
+        self.goal_reached()
+
+        for rect in self.enemy_constraints:
+            rect.move_ip(self.world_shift, 0)
+        for rect in self.player_start_end:
+            rect.move_ip(self.world_shift, 0)
     
-    def setup_level(self, layout: Any):
-        for row_index, row in enumerate(layout):
-            for col_index, col in enumerate(layout[row_index]):
-                x = col_index * TILE_SIZE
-                y = row_index * TILE_SIZE
-                if col == 'P':
-                    player = Player((x, y))
-                    self.player.add(player)
-                if col == 'X':
-                    tile =  Tile((x, y), (TILE_SIZE, TILE_SIZE))
-                    self.tiles.add(tile)
+    def handle_constraints_on_enemy(self):
+        for sprite in self.enemies_group.sprites():
+            for boundary in self.enemy_constraints:
+                if sprite.rect.colliderect(boundary):
+                    sprite.change_direction()
 
     def scroll_x(self):
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
-        if player_x < self.left_scroll_x and direction_x < 0:
-            self.world_shift = player.DEFAULT_SPEED
+
+        self.world_shift = 0
+        player.reset_speed()
+
+        if (player_x < self.scroll_start_pos and direction_x < 0 and self.player_start_end[0].left < self.lower_bound) or \
+        (player_x > self.scroll_start_pos and direction_x > 0 and self.player_start_end[1].left > self.upper_bound):
+            self.world_shift = -direction_x * player.DEFAULT_SPEED
             player.speed = 0
-        elif player_x > self.right_scroll_x and direction_x > 0:
-            self.world_shift = -player.DEFAULT_SPEED
-            player.speed = 0
-        else:
-            self.world_shift = 0
-            player.reset_speed()
+        
+        if (player_x < self.player_start_end[0].right and direction_x < 0):
+            self.player.sprite.speed = 0
+            self.player.sprite.rect.right = self.player_start_end[0].right
+        elif (player_x > self.player_start_end[1].x and direction_x > 0):
+            self.player.sprite.speed = 0
+            self.player.sprite.rect.left = self.player_start_end[1].left
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
         player.rect.x += (player.direction.x * player.speed)
+        collidable_sprites = self.terrain_group.sprites() + \
+                             self.front_palm_tree_group.sprites() + \
+                             self.barrel_group.sprites()
         
-        for tile_sprite in self.tiles.sprites():
+        for tile_sprite in collidable_sprites:
             if tile_sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = tile_sprite.rect.right
@@ -54,8 +126,11 @@ class Level:
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
+        collidable_sprites = self.terrain_group.sprites() + \
+                             self.front_palm_tree_group.sprites() + \
+                             self.barrel_group.sprites()
 
-        for tile_sprite in self.tiles.sprites():
+        for tile_sprite in collidable_sprites:
             if tile_sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = tile_sprite.rect.top
@@ -65,12 +140,6 @@ class Level:
                     player.direction.y = player.gravity #to allow sprite to falldown with no delay
                 
 
-    def run(self, surface: pygame.Surface):
-        self.tiles.update(self.world_shift)
-        self.tiles.draw(surface)
-        self.scroll_x()
-
-        self.player.update()
-        self.horizontal_movement_collision()
-        self.vertical_movement_collision()
-        self.player.draw(surface)
+    def goal_reached(self):
+        if self.player.sprite.rect.colliderect(self.player_start_end[1]):
+            pass
