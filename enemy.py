@@ -10,6 +10,9 @@ class Enemy(pygame.sprite.Sprite):
         self.image = frames[0]
         self.rect  = self.image.get_rect(topleft=pos)
         self.speed = choice([1, 2, 3]) * choice([-1, 1])
+        self.left_boundry = pygame.Rect(0, 0, 0, 0) #only for initialization
+        self.right_boundry = pygame.Rect(0, 0, 0, 0)
+
         self.change_direction()
 
     def move(self):
@@ -19,7 +22,8 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x += world_shift
         self.animate()
         self.move()
-
+        self.handle_boundry_collision()
+        
     def animate(self):
         self.frame_index += self.animation_speed
         if self.frame_index >= len(self.frames):
@@ -36,6 +40,11 @@ class Enemy(pygame.sprite.Sprite):
         elif self.speed < 0:
             self.image = pygame.transform.flip(self.frames[int(self.frame_index)], 0, 0)
 
+    def handle_boundry_collision(self):
+        if self.rect.colliderect(self.left_boundry) or self.rect.colliderect(self.right_boundry):
+            self.change_direction()
 
-
+    def assign_boundry(self, left: pygame.Rect, right: pygame.Rect):
+        self.left_boundry = left
+        self.right_boundry = right
 

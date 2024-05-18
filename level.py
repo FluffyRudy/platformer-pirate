@@ -10,7 +10,6 @@ from level_data import LevelData
 class Level:
     def __init__(self, level_data: LevelData, surface: pygame.Surface):
         self.display_surface = surface
-        self.map_size = level_data.get_map_size()
 
         self.terrain = level_data.get_terrain_data()
         self.terrain_group = pygame.sprite.Group(self.terrain)
@@ -42,6 +41,7 @@ class Level:
         self.upper_bound = self.display_surface.get_width() - self.player_start_end[1].width
 
         level_data.get_river()
+        self.assign_constraint_on_enemy()
 
     def run(self):
         self.update()
@@ -64,8 +64,6 @@ class Level:
         self.enemies_group.update(self.world_shift)
         self.enemies_group.draw(self.display_surface)
 
-        self.handle_constraints_on_enemy()
-
         self.river_group.update(self.world_shift)
         self.river_group.draw(self.display_surface)
 
@@ -82,12 +80,6 @@ class Level:
             rect.move_ip(self.world_shift, 0)
         for rect in self.player_start_end:
             rect.move_ip(self.world_shift, 0)
-    
-    def handle_constraints_on_enemy(self):
-        for sprite in self.enemies_group.sprites():
-            for boundary in self.enemy_constraints:
-                if sprite.rect.colliderect(boundary):
-                    sprite.change_direction()
 
     def scroll_x(self):
         player = self.player.sprite
@@ -143,3 +135,20 @@ class Level:
     def goal_reached(self):
         if self.player.sprite.rect.colliderect(self.player_start_end[1]):
             pass
+    
+    def left_right_nearest(self, src: pygame.Rect, points: list[pygame.Rect]):
+        left_point = None
+        right_point = None
+
+        for point in points:
+            if point.centerx < src.centerx and (left_point is None or point.centerx > left_point.centerx) and abs(point.bottom - src.top) <= TILE_SIZE:
+                left_point = point
+            elif point.centerx > src.centerx and (right_point is None or point.centerx < right_point.centerx) and abs(point.bottom - src.top) <= TILE_SIZE:
+                right_point = point
+
+        return left_point, right_point
+
+    def assign_constraint_on_enemy(self):
+        for sprite in self.enemies_group.sprites():
+            left_boundry, right_boundry = self.left_right_nearest(sprite.rect, self.enemy_constraints)
+            sprite.assign_boundry(left_boundry, right_boundry)

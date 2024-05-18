@@ -110,7 +110,7 @@ class LevelData:
         return self.__create_animated_instances(enemies_layer, Enemy)
 
     def get_enemies_boundries(self):
-        boundry_layer = self.__get_layer_data_by_name("EnemyBoundry")
+        boundry_layer: TiledObject = self.__get_layer_data_by_name("EnemyBoundry")
         boundry_rects = deque()
 
         for data in boundry_layer:

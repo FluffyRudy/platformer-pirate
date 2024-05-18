@@ -61,7 +61,7 @@
 </data>
  </layer>
  <objectgroup id="17" name="PlayerRange">
-  <object id="280" gid="138" x="92" y="256" width="64" height="64"/>
+  <object id="280" gid="138" x="4" y="248" width="64" height="64"/>
   <object id="281" gid="137" x="1833.33" y="376" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="9" name="PalmTreeBack" opacity="0.7" tintcolor="#8fa0a4">
@@ -77,7 +77,7 @@
   <object id="120" gid="110" x="1086" y="696" width="64" height="64"/>
   <object id="121" gid="110" x="1182" y="702" width="64" height="64"/>
   <object id="177" gid="115" x="460.129" y="501.425" width="38" height="27"/>
-  <object id="178" gid="115" x="407.238" y="504.537" width="38" height="27"/>
+  <object id="178" gid="115" x="384.571" y="507.87" width="38" height="27"/>
   <object id="181" gid="115" x="734.732" y="145.301" width="38" height="27"/>
   <object id="227" gid="101" x="1603" y="503" width="50" height="21"/>
   <object id="263" gid="90" x="1026.67" y="465.333" width="16" height="16"/>
@@ -100,7 +100,7 @@
   <object id="67" gid="102" x="419.667" y="530" width="47" height="23"/>
   <object id="68" gid="101" x="411" y="529.667" width="50" height="21"/>
   <object id="70" gid="95" x="442.333" y="513.333" width="39" height="32"/>
-  <object id="71" gid="95" x="395.667" y="512" width="39" height="32"/>
+  <object id="71" gid="95" x="397" y="513.333" width="39" height="32"/>
   <object id="73" gid="95" x="683" y="579.333" width="34.3333" height="32"/>
   <object id="96" gid="95" x="386.333" y="121.333" width="39" height="32"/>
   <object id="101" gid="95" x="722.333" y="129.667" width="39" height="32"/>
