@@ -43,6 +43,8 @@ class Level:
         level_data.get_river()
         self.assign_constraint_on_enemy()
 
+        level_data.get_level_label()
+
     def run(self):
         self.update()
 

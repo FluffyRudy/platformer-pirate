@@ -125,3 +125,13 @@ class LevelData:
     def get_river(self):
         river_layer = self.__get_layer_data_by_name("River")
         return self.__create_animated_instances(river_layer, River)
+    
+    def get_level_label(self):
+        level_label_layer = self.__map_data.get_layer_by_name('LevelLabel')
+
+        for data in level_label_layer:
+            if data.properties.get('lable'):
+                print(data.properties.get('lable'))
+                return data.properties.get('lable')
+        
+        return ""

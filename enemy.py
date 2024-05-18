@@ -5,7 +5,6 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int], frames: list[pygame.Surface]):
         super().__init__()
         self.frames = frames
-        print(self.frames)
         self.frame_index = 0
         self.animation_speed = 0.15
         self.image = frames[0]

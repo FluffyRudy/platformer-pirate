@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="23" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="299">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="23" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="299">
+ <properties>
+  <property name="lable" value=""/>
+ </properties>
  <tileset firstgid="1" source="../terrain.tsx"/>
  <tileset firstgid="86" source="../coin.tsx"/>
  <tileset firstgid="94" source="../PalmTree.tsx"/>
@@ -22,6 +25,14 @@
   <object id="184" gid="134" x="1025.33" y="545.333" width="32" height="32"/>
   <object id="197" gid="134" x="826.667" y="158.666" width="32" height="32"/>
   <object id="198" gid="134" x="606.667" y="161.333" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="21" name="LevelLabel">
+  <object id="297" x="591.948" y="34.3464" width="75.4375" height="18.6406">
+   <properties>
+    <property name="lable" value="LEVEL 1"/>
+   </properties>
+   <text wrap="1">LEVEL - 1</text>
+  </object>
  </objectgroup>
  <objectgroup id="12" name="Enemies">
   <object id="283" gid="128" x="344.75" y="579.5" width="34" height="30"/>
@@ -60,14 +71,6 @@
 35,36,36,36,36,36,37,0,0,0,18,19,19,19,19,19,19,20,39,18,19,19,19,19,19,19,20,0,18,19,20,0,0,39,75,76,39,75,76,39,0,0,0,0,0,0,0,0,0,0,0,35,36,36,36,36,36,37,0,0
 </data>
  </layer>
- <objectgroup id="22" name="LevelLabel">
-  <object id="298" x="582.281" y="26.6797" width="91.4375" height="18.6406">
-   <properties>
-    <property name="lable" value="LEVEL 0"/>
-   </properties>
-   <text wrap="1"></text>
-  </object>
- </objectgroup>
  <objectgroup id="17" name="PlayerRange">
   <object id="280" gid="144" x="4" y="248" width="64" height="64"/>
   <object id="281" gid="143" x="1833.33" y="376" width="64" height="64"/>
