@@ -45,10 +45,17 @@ class Level:
 
         level_data.get_level_label()
 
+        #score
+        self.score = 0
+
     def run(self):
         self.update()
 
     def update(self):
+
+        self.player.update()
+        self.player.draw(self.display_surface)
+        
         self.terrain_group.update(self.world_shift)
         self.terrain_group.draw(self.display_surface)
 
@@ -63,20 +70,20 @@ class Level:
         self.coin_groups.update(self.world_shift)
         self.coin_groups.draw(self.display_surface)
 
+        self.river_group.update(self.world_shift)
+        self.river_group.draw(self.display_surface)
+
         self.enemies_group.update(self.world_shift)
         self.enemies_group.draw(self.display_surface)
 
-        self.river_group.update(self.world_shift)
-        self.river_group.draw(self.display_surface)
+        self.scroll_x()
+        self.goal_reached()
 
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
 
-        self.player.update()
-        self.player.draw(self.display_surface)
-
-        self.scroll_x()
-        self.goal_reached()
+        self.player_coin_collision()
+        self.player_enemy_collision()
 
         for rect in self.enemy_constraints:
             rect.move_ip(self.world_shift, 0)
@@ -154,3 +161,22 @@ class Level:
         for sprite in self.enemies_group.sprites():
             left_boundry, right_boundry = self.left_right_nearest(sprite.rect, self.enemy_constraints)
             sprite.assign_boundry(left_boundry, right_boundry)
+        
+    def player_coin_collision(self):
+        collided_coin =  pygame.sprite.spritecollideany(self.player.sprite, self.coin_groups)
+        print(collided_coin)
+        if collided_coin:
+            collided_coin.apply_collide_effect_and_kill()
+            self.score += 1
+            print(self.score)
+
+    def player_enemy_collision(self):
+        player = self.player.sprite
+        for enemy in self.enemies_group.sprites():
+            if player.get_status() == "fall" and enemy.rect.collidepoint(player.rect.center):
+                enemy.apply_kill_effect_and_kill()
+                self.player.sprite.jump()
+            elif player.rect.colliderect(enemy.rect):
+                enemy.trigger_attack()
+            
+

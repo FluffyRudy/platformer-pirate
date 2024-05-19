@@ -29,8 +29,7 @@ class Game:
         while True:
             self.handle_event()
             self.screen.fill(pygame.Color(0, 0, 0, 0))
-            self.overworld.run()
-            False and self.level.run()
+            self.level.run()
             pygame.display.update()
             self.clock.tick(self.FPS)
 
