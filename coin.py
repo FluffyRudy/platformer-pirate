@@ -4,12 +4,13 @@ from support import import_folder
 class Coin(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int],  frames: list[pygame.Surface]):
         super().__init__()
-        self.frames = {"idle": frames, "collected": import_folder("graphics/treasure/coin-effect")}
+        self.frames = {"idle": frames, "collected": import_folder("graphics/treasure/Coin Effect")}
         self.frame_index = 0
         self.animation_speed = 0 if len(frames) == 0 else 0.1
         self.status = "idle"
         self.image = self.frames[self.status][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
+        self.value = 1
 
     def animation(self):
         self.frame_index += self.animation_speed
@@ -29,3 +30,6 @@ class Coin(pygame.sprite.Sprite):
       if self.status != "collected":
         self.status = "collected"
         self.frame_index = 0
+    
+    def devalue(self):
+      self.value = 0

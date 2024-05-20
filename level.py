@@ -21,6 +21,7 @@ class Level:
 
         barrel = level_data.get_barrel_data()
         self.barrel_group = pygame.sprite.Group(barrel)
+        
 
         coins = level_data.get_coins()
         self.coin_groups = pygame.sprite.Group(coins)
@@ -42,12 +43,14 @@ class Level:
 
         level_data.get_river()
         self.assign_constraint_on_enemy()
-
         level_data.get_level_label()
 
         #score
+        self.font = pygame.font.Font('font/font.ttf', 30)
+        self.score_offset = self.player.sprite.get_player_info_ui_geometry()
         self.score = 0
-
+        self.score_icon = pygame.image.load('graphics/ui/coin.png').convert_alpha()
+        
     def run(self):
         self.update()
 
@@ -77,6 +80,7 @@ class Level:
         self.enemies_group.draw(self.display_surface)
 
         self.scroll_x()
+        self.display_score()
         self.goal_reached()
 
         self.horizontal_movement_collision()
@@ -109,13 +113,19 @@ class Level:
         elif (player_x > self.player_start_end[1].x and direction_x > 0):
             self.player.sprite.speed = 0
             self.player.sprite.rect.left = self.player_start_end[1].left
+    
+    def display_score(self):
+        score = self.font.render(f'{self.score}', True, 'white')
+        self.display_surface.blit(score, (int(self.score_offset[0] * 1.4), 0))
+        self.display_surface.blit(self.score_icon, (int(self.score_offset[0] * 1.2), 10))
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
         player.rect.x += (player.direction.x * player.speed)
-        collidable_sprites = self.terrain_group.sprites() + \
-                             self.front_palm_tree_group.sprites() + \
-                             self.barrel_group.sprites()
+        collidable_sprites = self.front_palm_tree_group.sprites() + \
+                             self.barrel_group.sprites() + \
+                             self.terrain_group.sprites()
+
         
         for tile_sprite in collidable_sprites:
             if tile_sprite.rect.colliderect(player.rect):
@@ -127,9 +137,10 @@ class Level:
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
-        collidable_sprites = self.terrain_group.sprites() + \
-                             self.front_palm_tree_group.sprites() + \
-                             self.barrel_group.sprites()
+        collidable_sprites = self.front_palm_tree_group.sprites() + \
+                             self.barrel_group.sprites() + \
+                             self.terrain_group.sprites()
+                             
 
         for tile_sprite in collidable_sprites:
             if tile_sprite.rect.colliderect(player.rect):
@@ -164,19 +175,20 @@ class Level:
         
     def player_coin_collision(self):
         collided_coin =  pygame.sprite.spritecollideany(self.player.sprite, self.coin_groups)
-        print(collided_coin)
         if collided_coin:
             collided_coin.apply_collide_effect_and_kill()
-            self.score += 1
-            print(self.score)
+            self.score += collided_coin.value
+            collided_coin.devalue()
 
     def player_enemy_collision(self):
         player = self.player.sprite
-        for enemy in self.enemies_group.sprites():
-            if player.get_status() == "fall" and enemy.rect.collidepoint(player.rect.center):
-                enemy.apply_kill_effect_and_kill()
-                self.player.sprite.jump()
-            elif player.rect.colliderect(enemy.rect):
-                enemy.trigger_attack()
-            
-
+        collided_enemy = pygame.sprite.spritecollideany(player, self.enemies_group)
+        if collided_enemy:
+            enemy_center = collided_enemy.rect.centery
+            enemy_top = collided_enemy.rect.top
+            player_bottom = player.rect.bottom
+            if enemy_top < player_bottom < enemy_center and player.direction.y >= 0:
+              collided_enemy.apply_kill_effect_and_kill()
+              player.jump()
+            else:
+                player.get_damage()
